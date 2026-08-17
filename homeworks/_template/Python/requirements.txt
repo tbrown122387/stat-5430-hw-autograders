@@ -1,0 +1,2 @@
+pytest>=8.0
+# TODO: add any other packages this homework's submissions/checks need

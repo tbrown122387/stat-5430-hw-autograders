@@ -1,0 +1,106 @@
+name: Check autograder
+
+# Runs on every PR that touches a homework folder. For each changed
+# homeworks/<id>/ directory, it runs that homework's own checks against its
+# sample_submissions/passing/ file (must pass) and sample_submissions/failing/
+# file (must NOT pass) — so a broken or fake autograder fails CI before a
+# human ever has to look at it.
+
+on:
+  pull_request:
+    paths:
+      - "homeworks/**"
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      dirs: ${{ steps.find.outputs.dirs }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: find
+        run: |
+          changed=$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" -- 'homeworks/**')
+          dirs=$(printf '%s\n' "$changed" \
+            | grep -v '^homeworks/_template/' \
+            | awk -F/ 'NF>=2 {print $1"/"$2}' \
+            | sort -u)
+          json=$(printf '%s\n' "$dirs" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "dirs=$json" >> "$GITHUB_OUTPUT"
+          echo "Changed homework dirs: $json"
+
+  check-r:
+    needs: discover
+    if: needs.discover.outputs.dirs != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dir: ${{ fromJson(needs.discover.outputs.dirs) }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: check
+        run: |
+          if [ -d "${{ matrix.dir }}/R" ]; then echo "has_r=true" >> "$GITHUB_OUTPUT"; else echo "has_r=false" >> "$GITHUB_OUTPUT"; fi
+      - uses: r-lib/actions/setup-r@v2
+        if: steps.check.outputs.has_r == 'true'
+      - name: Install R packages
+        if: steps.check.outputs.has_r == 'true'
+        run: Rscript -e "install.packages(c('testthat', 'gradeR'))"
+      - name: Passing sample must pass
+        if: steps.check.outputs.has_r == 'true'
+        working-directory: ${{ matrix.dir }}/R
+        run: |
+          file=$(ls sample_submissions/passing/* 2>/dev/null | head -n1)
+          if [ -z "$file" ]; then echo "::error::no file in sample_submissions/passing/"; exit 1; fi
+          ./test_locally.sh "$file"
+      - name: Failing sample must NOT pass
+        if: steps.check.outputs.has_r == 'true'
+        working-directory: ${{ matrix.dir }}/R
+        run: |
+          file=$(ls sample_submissions/failing/* 2>/dev/null | head -n1)
+          if [ -z "$file" ]; then echo "::error::no file in sample_submissions/failing/"; exit 1; fi
+          if ./test_locally.sh "$file"; then
+            echo "::error::sample_submissions/failing/$file passed every check — these tests aren't actually distinguishing correct from incorrect answers."
+            exit 1
+          fi
+
+  check-python:
+    needs: discover
+    if: needs.discover.outputs.dirs != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dir: ${{ fromJson(needs.discover.outputs.dirs) }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: check
+        run: |
+          if [ -d "${{ matrix.dir }}/Python" ]; then echo "has_py=true" >> "$GITHUB_OUTPUT"; else echo "has_py=false" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/setup-python@v5
+        if: steps.check.outputs.has_py == 'true'
+        with:
+          python-version: "3.12"
+      - name: Install Python deps
+        if: steps.check.outputs.has_py == 'true'
+        run: pip install -r "${{ matrix.dir }}/Python/requirements.txt"
+      - name: Passing sample must pass
+        if: steps.check.outputs.has_py == 'true'
+        working-directory: ${{ matrix.dir }}/Python
+        run: |
+          file=$(ls sample_submissions/passing/* 2>/dev/null | head -n1)
+          if [ -z "$file" ]; then echo "::error::no file in sample_submissions/passing/"; exit 1; fi
+          ./test_locally.sh "$file"
+      - name: Failing sample must NOT pass
+        if: steps.check.outputs.has_py == 'true'
+        working-directory: ${{ matrix.dir }}/Python
+        run: |
+          file=$(ls sample_submissions/failing/* 2>/dev/null | head -n1)
+          if [ -z "$file" ]; then echo "::error::no file in sample_submissions/failing/"; exit 1; fi
+          if ./test_locally.sh "$file"; then
+            echo "::error::sample_submissions/failing/$file passed every check — these tests aren't actually distinguishing correct from incorrect answers."
+            exit 1
+          fi

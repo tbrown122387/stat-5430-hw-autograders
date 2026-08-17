@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -e
+
+# Gradescope only runs this file. It places the student's uploaded files in
+# /autograder/submission and expects a results file at
+# /autograder/results/results.json.
+
+cp /autograder/submission/test.py /autograder/source/test.py
+cd /autograder/source
+
+# `|| true`: pytest exits non-zero when a test fails, which would otherwise
+# stop this script (set -e) before results.json ever gets written.
+python3 -m pytest tests/ --junitxml=/tmp/report.xml -q || true
+
+python3 gradescope_json.py /tmp/report.xml /autograder/results/results.json

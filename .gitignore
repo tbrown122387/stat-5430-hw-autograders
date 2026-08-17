@@ -1,0 +1,15 @@
+# R
+.Rhistory
+.RData
+.Rproj.user/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# scratch output from test_locally.sh / run_autograder dry runs
+*.json.local
+report.xml
+
+.DS_Store

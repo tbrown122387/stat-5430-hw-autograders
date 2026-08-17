@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+
+# Gradescope only runs this file. It places the student's uploaded files in
+# /autograder/submission and expects a results file at
+# /autograder/results/results.json — gradeR::calcGradesForGradescope()
+# writes that file for us.
+
+# TODO: rename TODO_SUBMISSION_NAME.R to match the filename students submit
+cp /autograder/submission/TODO_SUBMISSION_NAME.R /autograder/source/TODO_SUBMISSION_NAME.R
+cd /autograder/source
+
+LC_ALL= Rscript grade_one_submission.R
