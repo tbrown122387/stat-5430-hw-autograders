@@ -8,7 +8,7 @@ assignment.
 ## 1. Copy the template
 
 ```bash
-cp -r homeworks/_template homeworks/hw3   # use the real homework number
+cp -r homeworks/_template homeworks/hw6   # use the real homework number
 ```
 
 Delete whichever of `R/` or `Python/` doesn't apply if the homework is
@@ -16,15 +16,15 @@ single-language.
 
 ## 2. Fill in the assignment context
 
-Edit `homeworks/hw3/README.md`: paste or link the actual assignment prompt,
+Edit `homeworks/hw6/README.md`: paste or link the actual assignment prompt,
 so a reviewer (or you, in three weeks) can tell what the checks are
 supposed to verify without guessing.
 
 ## 3. Pick the submission filename
 
 Every `TODO_SUBMISSION_NAME` in the template needs to become the exact
-filename students are told to submit for this assignment (e.g. `hw3.R`,
-`hw3.py`). It has to match in **three** places per language:
+filename students are told to submit for this assignment (e.g. `hw6.R`,
+`hw6.py`). It has to match in **three** places per language:
 
 - `run_autograder`
 - `grade_one_submission.R` (R) or `tests/test_submission.py` (Python)
@@ -61,9 +61,9 @@ that just never gets asserted on).
 ## 6. Test locally
 
 ```bash
-cd homeworks/hw3/R          # or Python
-./test_locally.sh sample_submissions/passing/hw3.R
-./test_locally.sh sample_submissions/failing/hw3.R
+cd homeworks/hw6/R          # or Python
+./test_locally.sh sample_submissions/passing/hw6.R
+./test_locally.sh sample_submissions/failing/hw6.R
 ```
 
 No Docker, no Gradescope account. This runs the exact same test files

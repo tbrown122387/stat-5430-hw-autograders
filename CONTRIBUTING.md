@@ -8,13 +8,13 @@
    GitHub repo.
 2. Clone your fork, and create a branch for the homework you're working on:
    ```bash
-   git checkout -b hw3-autograder
+   git checkout -b hw6-autograder
    ```
-3. Do your work under `homeworks/hw3/` (see
+3. Do your work under `homeworks/hw6/` (see
    [docs/writing-a-new-autograder.md](docs/writing-a-new-autograder.md)).
 4. Test locally before you push:
    ```bash
-   cd homeworks/hw3/R      # or Python
+   cd homeworks/hw6/R      # or Python
    ./test_locally.sh sample_submissions/passing/...
    ./test_locally.sh sample_submissions/failing/...
    ```

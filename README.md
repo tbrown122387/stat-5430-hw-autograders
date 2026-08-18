@@ -5,6 +5,12 @@ their own homeworks**, instead of only ever seeing checks the instructor
 already wrote. It's public: anyone can read it, and any student can open a
 pull request, but nobody besides the instructor can push directly to `main`.
 
+**This starts with Homework 6, not Homework 1.** Writing a check here means
+using `testthat` (R) or `pytest` (Python), which isn't taught until Module 8:
+Testing — and Homeworks 1-5 are already assigned before that module happens.
+Homeworks 1-5 keep using the instructor-authored autograders from past
+semesters; nothing for those needs to go through this repo.
+
 ## How this works
 
 1. Each homework's assignment prompt tells you what your submission file
@@ -34,7 +40,7 @@ PR workflow itself.
 homeworks/
 ├── demo/          # worked example, based on the semester's ungraded practice assignment
 ├── _template/      # copy this to start a new homework's autograder
-└── hwN/            # what you'll add, one per homework
+└── hwN/            # what you'll add, one per homework (hw6 onward)
 ```
 
 Each homework folder has an `R/` subfolder, a `Python/` subfolder, or both
