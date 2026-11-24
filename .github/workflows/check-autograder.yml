@@ -84,7 +84,12 @@ jobs:
         if: steps.check.outputs.has_py == 'true'
         with:
           python-version: "3.12"
-      - name: Install Python deps
+      - name: Install Otter-Grader
+        if: steps.check.outputs.has_py == 'true'
+        run: |
+          pip install otter-grader ipykernel
+          python -m ipykernel install --user --name python3
+      - name: Install submission's own dependencies
         if: steps.check.outputs.has_py == 'true'
         run: pip install -r "${{ matrix.dir }}/Python/requirements.txt"
       - name: Passing sample must pass

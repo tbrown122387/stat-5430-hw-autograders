@@ -1,1 +1,3 @@
-pytest>=8.0
+# Extra packages this homework's submission needs beyond Otter-Grader's own
+# base environment (e.g. pandas, numpy). Otter adds otter-grader itself
+# automatically — don't list it here. Empty for this demo.

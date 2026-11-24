@@ -31,6 +31,6 @@
 - One homework's autograder per PR — keeps review small and focused.
 - Don't touch other students' `homeworks/hwN/` folders.
 - If your checks need a package beyond what's already listed
-  (`testthat`/`gradeR` for R, `pytest` for Python), add it to `setup.sh` (R)
-  or `requirements.txt` (Python) in your own homework folder — not the
-  shared template.
+  (`testthat`/`gradeR` for R, Otter-Grader for Python), add it to
+  `setup.sh` (R) or `requirements.txt` (Python) in your own homework
+  folder — not the shared template.

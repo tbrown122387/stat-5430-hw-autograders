@@ -33,16 +33,22 @@ demo/
 │       ├── passing/test.R          # a <- 1   (should pass every check)
 │       └── failing/test.R          # a <- 2   (should fail — proves the checks aren't fake)
 └── Python/
-    ├── setup.sh
-    ├── run_autograder
-    ├── requirements.txt
-    ├── tests/test_submission.py    # the actual checks, written with pytest
-    ├── gradescope_json.py          # turns pytest's JUnit report into Gradescope's results.json
-    ├── test_locally.sh
+    ├── otter_config.json           # Otter-Grader config (same format the main course repo uses)
+    ├── requirements.txt            # extra packages a correct submission needs (none, here)
+    ├── tests/q1.py                 # the actual check, written in Otter's "OK format"
+    ├── test_locally.sh             # otter generate + otter run, no Docker/Gradescope needed
     └── sample_submissions/
         ├── passing/test.py         # a = 1
         └── failing/test.py         # a = 2
 ```
+
+Unlike R's `run_autograder`/`setup.sh`, there's nothing hand-written for
+Python beyond the config and test files — `otter generate` builds the real
+`run_autograder`/`setup.sh`/`environment.yml` from `otter_config.json` and
+`requirements.txt`, and that's also what `test_locally.sh` calls under the
+hood. Python also doesn't need a fixed submission filename like R's
+`a.R`/`test.R` convention — Otter finds the submission itself by file
+extension (`*.ipynb`, else `*.py`).
 
 ## Try it yourself
 

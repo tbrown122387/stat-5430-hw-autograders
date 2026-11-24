@@ -1,2 +1,5 @@
-pytest>=8.0
-# TODO: add any other packages this homework's submissions/checks need
+# Extra packages this homework's submission needs beyond Otter-Grader's own
+# base environment (e.g. pandas, numpy). Otter adds otter-grader itself
+# automatically — don't list it here.
+#
+# TODO: list any packages a correct submission would need to import.

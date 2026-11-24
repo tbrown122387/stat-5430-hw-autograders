@@ -12,18 +12,22 @@ checks are supposed to verify.
 ## What's here
 
 - `R/` — checks for the R part of the assignment, using `testthat` + `gradeR`
-- `Python/` — checks for the Python part of the assignment, using `pytest`
+- `Python/` — checks for the Python part of the assignment, using
+  Otter-Grader's "OK format" test files (same format the main course repo
+  uses)
 
 Delete whichever language folder doesn't apply if the homework is
 single-language.
 
 ## Before you open a PR
 
-1. Rename `SUBMISSION_NAME` everywhere it appears (`run_autograder`,
-   `grade_one_submission.R` / `tests/test_submission.py`, `test_locally.sh`)
-   to match the exact filename students are told to submit.
-2. Write real checks in `tests/test_submission.R` and/or
-   `tests/test_submission.py`.
+1. **R only:** rename `SUBMISSION_NAME` everywhere it appears
+   (`run_autograder`, `grade_one_submission.R`, `test_locally.sh`) to match
+   the exact filename students are told to submit. Python doesn't need
+   this — Otter finds the submission itself by file extension.
+2. Write real checks in `tests/test_submission.R` (R) and/or add a real
+   `tests/*.py` OK-format test file per question (Python) — rename
+   `tests/TODO_question_name.py` to start.
 3. Add at least one submission file to `sample_submissions/passing/` that
    should get full credit, and one to `sample_submissions/failing/` that
    should not. CI will run both and fail the PR if the "failing" one
